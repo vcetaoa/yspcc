@@ -1,0 +1,372 @@
+1. Introduction to System Software
+
+# System Software 
+
+- acts as an interface between hardware and user applications
+- Goals:
+    -- convenience - cmd, shell
+    -- resource management - cpu should not be idle
+    -- optimization - hardware
+    -- security - read write permissions
+
+
+# System Program 
+
+- tools that help in managing and controlling computer operations
+
+1. Assembler
+- convert assembly language code into machine code
+
+2. macro Processor
+- expand macros into actual code
+- save repetitive effort
+
+3. Loader 
+- loads machine code into memory
+- resolves addresses 
+- give actual space in memory
+
+4. Linker
+- combines multiple files into a single executable file 
+- link library files
+
+5. Compiler
+- translates high level language to machine code
+- output as machine code
+- is smart
+
+6. Interpreter
+- line by line 
+- slower but easy for debugging
+
+7. Device drivers
+- os to communicate with hardware devices
+- printer, graphic card
+
+8. Operating System
+- collection of Program to execute instructions
+- process scheduling, file management
+
+9. Editors
+
+10. Debuggers
+- break points
+- watch variables
+
+# Difference in System software and application software
+
+- controls basic system operations
+- perform user specific tasks
+
+- platform to run application software
+- helps users to perform tasks
+
+- os, compilers
+- ms, word, executable
+
+- written in low level language 
+- high level languages
+
+- comes pre installed
+- installed on user needs
+
+- is on everytime
+- is on when user needs
+
+
+
+
+
+
+
+
+
+
+
+2. Assemblers
+
+# Structure
+
+label
+mnemonic
+operands
+comments
+
+# Types of Statements
+
+1. imperative - ADD, SUB, mover
+2. declaration statements - DC - storage and value, DS - storage only
+3. assembler directives - Start, end, origin, equ, drop, using, LTORG, end
+
+# Data Structures of Assembler
+
+- MOT - Machine operation table - pre defined table 
+- POT - pseudo operation table - pre defined table - assembler directives
+- Symbol table 
+- literal table 
+- base table - yes no
+
+# Forward reference problem
+
+ADD R1, A 
+-
+-
+A DC '1'
+
+- call first declare later
+- to solve this we use two pass assembler
+
+
+# Two pass assembler
+
+- Pass 1 - entry in symbol and literal table - analysis plase
+- Pass 2 - refer pass 1 and then generate the object code - synthesis phase
+
+
+whose intermediate code are not generated
+- label 
+- origin
+- eqa 
+
+whose object code is not generated
+- ltorg 
+- dl 
+
+example code 
+ADD BREG, 1 - (IS, 03) 02 (L,1)
+
+
+# Single pass assembler
+
+- for solving the forward reference
+- we use TII table - table of incomplete instructions
+- we store its address no and the symbol
+- so that when we get that symbol declaration, we can go that address and give the value of that address
+
+
+
+
+
+
+
+
+
+
+
+3. Macros and Macro Processor
+
+# macro definition
+
+MACRO
+    INCR &arg
+    A1, &arg
+    A2, &arg
+MEND
+
+# macro call
+
+INCR data1 
+
+
+# Types of macro
+
+
+1. Macro instruction argument
+MACRO
+&label  INCR &arg
+        A1, &arg
+        A2, &arg
+MEND
+
+2. Conditional Macro
+- aif and ago
+
+MACRO
+&arg0 INCR &cnt, &arg1, &arg2
+      &arg0 A1, &arg1
+      AIF(&cnt EQ 1).FINI
+      &arg0 A2, &arg2
+FINI MEND
+
+3. Macro call within macro
+
+4. Macro definition within macro - nested macro 
+
+# Data structures of macro Processor pass 1
+- mdt - all definition 
+- mnt - just the index of the mdt
+- mdtc - pointers
+- mntc - pointers
+- ala - just the arguments
+
+# Data structures of macro Processor pass 2
+- mdtp
+- mntp 
+- ala 
+
+
+
+
+
+
+
+
+
+
+
+
+
+4. Loaders and Linkers 
+
+# Functions
+- allocation - allocate space for Program
+- linking - linking diff object codes
+- relocation - adjust all address dependent locations
+- loading - place machine instructions into memory
+
+
+# Types of Loader
+
+1. Compile/Assemble and go Loader - assembler is in the memory
+2. General loader scheme - loader is there in memory
+
+3. Absolute Loader - allocation, linking by programmer , relocation by assembler - loading by loader
+    Text card - 
+    Transfer card - 
+
+4. Direct Linking Loader - 
+- copy to memory + adjust addresses and external references
+- absolute loader just copies with fixed addresses
+
+5. Dynamic loader 
+- loads the files on runtime
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+5. Compilers: Analysis Phase 
+
+# Context 
+
+preprocessor (header files) - compiler - assembler (machine code) - linker - loader 
+
+
+# Phases of compiler
+
+- lexical analyzer - regular expression - type 3 grammar
+- syntax analyzer - generates parse tree - type 2 grammar - cfg
+- semantic analyzer - find mismatch, out of bound
+- intermediate code generation 
+- code optimization
+- code generation
+
+# Lexical Analyzer
+
+- scans the HLL code and takes lexemes and produces tokens
+- Tokens:
+    identifier
+    operator
+    keyword
+    punctuators
+    constants
+    literals
+    special characters
+
+- data structures - DFA, transition table, token buffer
+
+# Syntax Analyzer
+
+- parse tree 
+- first and follow
+- left recursion 
+    A -> BA'
+    A' -> aA' | E 
+- left factoring
+
+- Types of parsers
+
+Steps:
+- first and follow
+- parse table
+- stack implementation
+- parse tree
+
+    LL1 Parser
+        - start from the input string and get $ on both sides
+
+    Recursive descendent parser - Top down parser
+        - we have to draw the parse tree, back track
+
+    Bottom up parser (Shift reduce parser) - LR0
+        - augment the grammar (.)
+
+    operator precedence parser (bottom up)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+5. Compilers: Synthesis Phase 
+
+# Intermediate codes
+
+- postfix expression
+    - exy?
+
+- 3 - address code
+    if and goto
+    t2[t1] 
+
+- syntax tree
+
+# Basic Block
+
+- leader 
+    first statement
+    target statement of else
+    statement after any goto 
+
+
+# Directed Acyclic Graph (DAG)
+
+- no cycles and eliminate common sub expressions
+
+# Code optimization
+
+- peephole
+eliminate redundant, unreachable, jumps, strength reduction, algebric simplification
+
+- other
+compile time evaluation
+constant propagation - x = 10, y = x/5 directly y = 2
+dead code elimination
+common subexpression elimination
+loop optimization
+loop unrolling  - write statement twice
+loop jamming
